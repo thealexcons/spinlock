@@ -6,6 +6,13 @@
 #include <atomic>
 #include <string>
 
+/*
+Ticket spinlocks are used in practice in NUMA systems. Although it has a higher overhead than standard
+spinlocks, it scales better for NUMA systems.
+Why? Processes on the same NUMA node as the standard spinlock have an unfair advantage in obtaining the lock.
+Processes on remote NUMA nodes experience lock starvation and degraded performance.
+*/
+
 class fair_ticket_spinner {
  public:
   fair_ticket_spinner() : next_ticket_(0), now_serving_(0) {}
